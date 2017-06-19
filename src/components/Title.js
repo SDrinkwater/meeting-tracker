@@ -33,8 +33,24 @@ class Title extends Component {
     };
   }
 
+  onBlur = () => {
+    this.setState({ selected: false });
+  }
+
   onChange = (event) => {
     this.setState({ value: event.target.value });
+  }
+
+  onKeyPress = (e) => {
+    if (e.keyCode === 13 || e.keyCode === 27) {
+      this.onBlur();
+    }
+  };
+
+  getTitleFocus = () => {
+    this.setState({ selected: true }, () => {
+      this.input.focus();
+    });
   }
 
   getTitle = () => {
@@ -43,6 +59,7 @@ class Title extends Component {
         <TextField
           hintText="Title"
           onChange={this.onChange}
+          onKeyUp={this.onKeyPress}
           ref={(o) => { this.input = o; }}
           style={styles.textField}
           value={this.state.value}
@@ -56,12 +73,6 @@ class Title extends Component {
     );
   }
 
-  getTitleFocus = () => {
-    this.setState({ selected: true }, () => {
-      this.input.focus();
-    });
-  }
-
   render() {
     const title = this.getTitle();
     return (
@@ -69,7 +80,7 @@ class Title extends Component {
         style={styles.container}
         ref={(o) => { this.title = o; }}
         onClick={this.getTitleFocus}
-        onBlur={() => this.setState({ selected: false })}
+        onBlur={this.onBlur}
       >
         { title }
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import _ from 'lodash';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -90,5 +91,8 @@ App.propTypes = {
   meetings: PropTypes.shape({}).isRequired,
   timers: PropTypes.shape({}).isRequired,
 };
+
+// Needed for onTouchTap
+injectTapEventPlugin();
 
 export default connect(maptStateToProps, maptDispatchToProps)(App);

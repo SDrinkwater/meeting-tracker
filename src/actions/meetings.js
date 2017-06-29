@@ -1,6 +1,5 @@
 import {
   ADD_MEETING,
-  REMOVE_MEETING,
   REMOVE_MEETING_BY_ID,
 
   START_MEETING,
@@ -16,15 +15,6 @@ export const addMeeting = id => (
     dispatch({
       type: ADD_MEETING,
       id,
-    });
-  }
-);
-
-export const removeMeeting = () => (
-  (dispatch) => {
-    dispatch(timerActions.removeTimer());
-    dispatch({
-      type: REMOVE_MEETING,
     });
   }
 );

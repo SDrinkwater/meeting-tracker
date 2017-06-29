@@ -1,8 +1,7 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
 import {
   ADD_TIMER,
-  REMOVE_TIMER,
   REMOVE_TIMER_BY_ID,
 
   START_TIMER,
@@ -10,46 +9,38 @@ import {
   RESET_TIMER,
 } from '../constants/ActionTypes';
 
-const initialState = List([]);
+const initialState = Map({});
 
 const timers = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TIMER:
-      return state.push(
+      return state.set(
+        action.id,
         fromJS({
-          id: action.id,
           baseTime: 0,
           startedAt: undefined,
           stoppedAt: undefined,
         }),
       );
 
-    case REMOVE_TIMER:
-      return state.pop();
-
     case REMOVE_TIMER_BY_ID:
-      return state.filter(timer =>
-        timer.get('id') !== action.id,
-      );
+      return state.remove(action.id);
 
     case START_TIMER: {
-      const timerIndex = state.findIndex(timer => timer.get('id') === action.id);
-      return state.setIn([timerIndex, 'baseTime'], action.baseTime)
-        .setIn([timerIndex, 'startedAt'], action.now)
-        .setIn([timerIndex, 'stoppedAt'], undefined);
+      return state.setIn([action.id, 'baseTime'], action.baseTime)
+        .setIn([action.id, 'startedAt'], action.now)
+        .setIn([action.id, 'stoppedAt'], undefined);
     }
 
     case STOP_TIMER: {
-      const timerIndex = state.findIndex(timer => timer.get('id') === action.id);
-      return state.setIn([timerIndex, 'stoppedAt'], action.now);
+      return state.setIn([action.id, 'stoppedAt'], action.now);
     }
 
     case RESET_TIMER: {
-      const timerIndex = state.findIndex(timer => timer.get('id') === action.id);
-      const timerToReset = state.get(timerIndex);
-      return state.setIn([timerIndex, 'baseTime'], 0)
-        .setIn([timerIndex, 'startedAt'], timerToReset.startedAt ? action.now : undefined)
-        .setIn([timerIndex, 'stoppedAt'], timerToReset.stoppedAt ? action.now : undefined);
+      const timerToReset = state.get(action.id);
+      return state.setIn([action.id, 'baseTime'], 0)
+        .setIn([action.id, 'startedAt'], timerToReset.startedAt ? action.now : undefined)
+        .setIn([action.id, 'stoppedAt'], timerToReset.stoppedAt ? action.now : undefined);
     }
 
     default:

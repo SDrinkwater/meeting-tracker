@@ -1,9 +1,7 @@
 export const ADD_MEETING = 'ADD_MEETING';
-export const REMOVE_MEETING = 'REMOVE_MEETING';
 export const REMOVE_MEETING_BY_ID = 'REMOVE_MEETING_BY_ID';
 
 export const ADD_TIMER = 'ADD_TIMER';
-export const REMOVE_TIMER = 'REMOVE_TIMER';
 export const REMOVE_TIMER_BY_ID = 'REMOVE_TIMER_BY_ID';
 
 export const START_TIMER = 'START_TIMER';

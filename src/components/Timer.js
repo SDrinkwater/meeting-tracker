@@ -22,10 +22,10 @@ class Timer extends Component {
 
   toggle = (elapsed) => {
     if (this.props.play) {
-      this.props.stop(this.props.timer.id);
+      this.props.stop(this.props.id);
       clearInterval(this.interval);
     } else {
-      this.props.start(this.props.timer.id, elapsed);
+      this.props.start(this.props.id, elapsed);
       this.interval = setInterval(this.forceUpdate.bind(this), 333);
     }
   };
@@ -50,7 +50,7 @@ class Timer extends Component {
         <RaisedButton
           label="Reset"
           style={styles.button}
-          onClick={() => this.props.reset(this.props.timer.id)}
+          onClick={() => this.props.reset(this.props.id)}
         />
       </div>
     );
@@ -62,8 +62,8 @@ Timer.propTypes = {
   stop: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   play: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
   timer: PropTypes.shape({
-    id: PropTypes.string,
     baseTime: PropTypes.number,
     startedAt: PropTypes.number,
     stoppedAt: PropTypes.number,

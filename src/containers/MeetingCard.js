@@ -46,13 +46,14 @@ const MeetingCard = props => (
       <IconButton
         style={styles.close}
         onClick={() => {
-          props.actions.removeMeetingById(props.meeting.id);
+          props.actions.removeMeetingById(props.id);
         }}
       >
         <NavigationClose />
       </IconButton>
     </div>
     <Timer
+      id={props.id}
       play={props.meeting.play}
       reset={props.actions.resetMeeting}
       start={props.actions.startMeeting}
@@ -63,6 +64,7 @@ const MeetingCard = props => (
 );
 
 MeetingCard.propTypes = {
+  id: PropTypes.string.isRequired,
   actions: PropTypes.shape({
     removeMeetingById: PropTypes.func,
     startMeeting: PropTypes.func,
@@ -71,11 +73,9 @@ MeetingCard.propTypes = {
 
   }).isRequired,
   meeting: PropTypes.shape({
-    id: PropTypes.string,
     play: PropTypes.bool,
   }).isRequired,
   timer: PropTypes.shape({
-    id: PropTypes.string,
     baseTime: PropTypes.number,
     startedAt: PropTypes.number,
     stoppedAt: PropTypes.number,

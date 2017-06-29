@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import _ from 'lodash';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,7 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addMeeting, removeMeeting } from './actions/meetings';
+import { addMeeting } from './actions/meetings';
 import MeetingCard from './containers/MeetingCard';
 
 const styles = {
@@ -38,7 +40,7 @@ const maptStateToProps = state => ({
 });
 
 const maptDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ addMeeting, removeMeeting }, dispatch),
+  actions: bindActionCreators({ addMeeting }, dispatch),
 });
 
 class App extends Component {
@@ -47,17 +49,13 @@ class App extends Component {
     this.props.actions.addMeeting(id);
   }
 
-  removeMeeting = () => {
-    this.props.actions.removeMeeting();
-  }
-
-
   render() {
-    const meetings = this.props.meetings.map((meeting) => {
-      const timer = this.props.timers.find(timerElement => (timerElement.id === meeting.id));
+    const meetings = _.mapValues(this.props.meetings, (meeting, key) => {
+      const timer = this.props.timers[key];
       return (
         <MeetingCard
-          key={meeting.id}
+          key={key}
+          id={key}
           meeting={meeting}
           timer={timer}
         />
@@ -74,12 +72,11 @@ class App extends Component {
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild>
               <MenuItem primaryText="Add" onClick={this.addMeeting} />
-              <MenuItem primaryText="Remove" onClick={this.removeMeeting} />
             </ToolbarGroup>
           </Toolbar>
         </div>
         <div style={styles.content}>
-          {meetings}
+          {Object.values(meetings)}
         </div>
       </div>
     );
@@ -89,10 +86,9 @@ class App extends Component {
 App.propTypes = {
   actions: PropTypes.shape({
     addMeeting: PropTypes.func,
-    removeMeeting: PropTypes.func,
   }).isRequired,
-  meetings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  timers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  meetings: PropTypes.shape({}).isRequired,
+  timers: PropTypes.shape({}).isRequired,
 };
 
 export default connect(maptStateToProps, maptDispatchToProps)(App);

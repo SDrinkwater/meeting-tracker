@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import SecondsTohmmss from '../utils/SecondsTohhmmss';
+import getElapsedTime from '../utils/getElapsedTime';
+import secondsTohhmmss from '../utils/secondsTohhmmss';
 
 const styles = {
   time: {
@@ -15,74 +16,41 @@ const styles = {
 };
 
 class Timer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.getInitialState();
-  }
-
-  getInitialState = () => (
-    {
-      clock: 0,
-      time: '00:00:00',
-      play: false,
-    });
-
-  componentDidMount() {
-    if (this.state.play) {
-      this.interval = setInterval(this.tick, 1000);
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.play !== this.state.play) {
-      if (nextState.play) {
-        this.start();
-      } else {
-        this.stop();
-      }
-    }
-  }
-
-  start = () => {
-    this.props.toggle();
-    this.interval = setInterval(this.tick, 1000);
-  }
-
-  stop = () => {
-    this.props.toggle();
+  componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  reset = () => {
-    this.props.reset();
-    this.stop();
-    this.setState(this.getInitialState());
-  }
-
-  tick = () => {
-    this.setState({
-      clock: this.state.clock + 1,
-      time: SecondsTohmmss(this.state.clock + 1),
-    });
-  }
+  toggle = (elapsed) => {
+    if (this.props.play) {
+      this.props.stop(this.props.timer.id);
+      clearInterval(this.interval);
+    } else {
+      this.props.start(this.props.timer.id, elapsed);
+      this.interval = setInterval(this.forceUpdate.bind(this), 333);
+    }
+  };
 
   render() {
+    const { baseTime, startedAt, stoppedAt } = this.props.timer;
+    const elapsed = getElapsedTime(baseTime, startedAt, stoppedAt);
+    const hhmmss = secondsTohhmmss(elapsed > 1000 ? Math.floor(elapsed / 1000) : 0);
+
     return (
       <div>
         <div style={styles.time}>
-          {this.state.time}
+          {hhmmss}
         </div>
         <RaisedButton
-          label={this.state.play ? 'Stop' : 'Start'}
-          primary={!this.state.play}
-          secondary={this.state.play}
+          label={this.props.play ? 'Stop' : 'Start'}
+          primary={!this.props.play}
+          secondary={this.props.play}
           style={styles.button}
-          onClick={() => this.setState({ play: !this.state.play })}
+          onClick={() => this.toggle(elapsed)}
         />
         <RaisedButton
           label="Reset"
           style={styles.button}
-          onClick={this.reset}
+          onClick={() => this.props.reset(this.props.timer.id)}
         />
       </div>
     );
@@ -90,8 +58,16 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  toggle: PropTypes.func.isRequired,
+  start: PropTypes.func.isRequired,
+  stop: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  play: PropTypes.bool.isRequired,
+  timer: PropTypes.shape({
+    id: PropTypes.string,
+    baseTime: PropTypes.number,
+    startedAt: PropTypes.number,
+    stoppedAt: PropTypes.number,
+  }).isRequired,
 };
 
 export default Timer;

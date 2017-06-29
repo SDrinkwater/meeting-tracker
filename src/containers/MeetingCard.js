@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
-import { removeMeetingById, toggleMeeting, resetMeeting } from '../actions';
+import { removeMeetingById, startMeeting, stopMeeting, resetMeeting } from '../actions/meetings';
 
 import Timer from '../components/Timer';
 import Title from '../components/Title';
@@ -34,7 +34,9 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ removeMeetingById, toggleMeeting, resetMeeting }, dispatch),
+  actions: bindActionCreators({
+    removeMeetingById, startMeeting, stopMeeting, resetMeeting,
+  }, dispatch),
 });
 
 const MeetingCard = props => (
@@ -43,22 +45,41 @@ const MeetingCard = props => (
       <Title />
       <IconButton
         style={styles.close}
-        onClick={() => props.actions.removeMeetingById(props.id)}
+        onClick={() => {
+          props.actions.removeMeetingById(props.meeting.id);
+        }}
       >
         <NavigationClose />
       </IconButton>
     </div>
-    <Timer toggle={props.actions.toggleMeeting} reset={props.actions.resetMeeting} />
+    <Timer
+      play={props.meeting.play}
+      reset={props.actions.resetMeeting}
+      start={props.actions.startMeeting}
+      stop={props.actions.stopMeeting}
+      timer={props.timer}
+    />
   </Paper>
 );
 
 MeetingCard.propTypes = {
   actions: PropTypes.shape({
-    toggleMeeting: PropTypes.func,
     removeMeetingById: PropTypes.func,
+    startMeeting: PropTypes.func,
+    stopMeeting: PropTypes.func,
     resetMeeting: PropTypes.func,
+
   }).isRequired,
-  id: PropTypes.string.isRequired,
+  meeting: PropTypes.shape({
+    id: PropTypes.string,
+    play: PropTypes.bool,
+  }).isRequired,
+  timer: PropTypes.shape({
+    id: PropTypes.string,
+    baseTime: PropTypes.number,
+    startedAt: PropTypes.number,
+    stoppedAt: PropTypes.number,
+  }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(MeetingCard);

@@ -11,7 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addMeeting, removeMeeting } from './actions';
+import { addMeeting, removeMeeting } from './actions/meetings';
 import MeetingCard from './containers/MeetingCard';
 
 const styles = {
@@ -33,7 +33,8 @@ const styles = {
 };
 
 const maptStateToProps = state => ({
-  meetings: state.meetings,
+  meetings: state.meetings.toJS(),
+  timers: state.timers.toJS(),
 });
 
 const maptDispatchToProps = dispatch => ({
@@ -41,30 +42,27 @@ const maptDispatchToProps = dispatch => ({
 });
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      meetings: [],
-    };
-
-    this.addMeeting = this.addMeeting.bind(this);
-    this.removeMeeting = this.removeMeeting.bind(this);
+  addMeeting = () => {
+    const id = uuid();
+    this.props.actions.addMeeting(id);
   }
 
-  addMeeting() {
-    this.props.actions.addMeeting(uuid());
-  }
-
-  removeMeeting() {
+  removeMeeting = () => {
     this.props.actions.removeMeeting();
   }
 
 
   render() {
-    const meetings = this.props.meetings.meetings.map(meeting => (
-      <MeetingCard key={meeting.id} id={meeting.id} />
-    ));
+    const meetings = this.props.meetings.map((meeting) => {
+      const timer = this.props.timers.find(timerElement => (timerElement.id === meeting.id));
+      return (
+        <MeetingCard
+          key={meeting.id}
+          meeting={meeting}
+          timer={timer}
+        />
+      );
+    });
 
     return (
       <div>
@@ -93,7 +91,8 @@ App.propTypes = {
     addMeeting: PropTypes.func,
     removeMeeting: PropTypes.func,
   }).isRequired,
-  meetings: PropTypes.shape({ meetings: PropTypes.arrayOf(PropTypes.object) }).isRequired,
+  meetings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  timers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(maptStateToProps, maptDispatchToProps)(App);

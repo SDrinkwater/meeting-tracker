@@ -1,59 +1,45 @@
-import * as types from '../constants/ActionTypes';
+import { List, fromJS } from 'immutable';
 
-const initialState = {
-  meetings: [],
-};
+import {
+  ADD_MEETING,
+  REMOVE_MEETING,
+  REMOVE_MEETING_BY_ID,
+
+  START_MEETING,
+  STOP_MEETING,
+  RESET_MEETING,
+} from '../constants/ActionTypes';
+
+const initialState = List([]);
 
 const meetings = (state = initialState, action) => {
   switch (action.type) {
-    case types.ADD_MEETING:
-      return {
-        meetings: [...state.meetings,
-          {
-            id: action.id,
-            clock: 0,
-            time: '00:00:00',
-            play: false,
-          },
-        ],
-      };
+    case ADD_MEETING:
+      return state.push(
+        fromJS({
+          id: action.id,
+          title: 'Meeting',
+          play: false,
+        }),
+      );
 
-    case types.REMOVE_MEETING: {
-      const localMeetings = state.meetings;
-      localMeetings.splice(-1, 1);
-      return { meetings: localMeetings };
+    case REMOVE_MEETING: {
+      return state.pop();
     }
 
-    case types.REMOVE_MEETING_BY_ID:
-      return {
-        meetings: state.meetings.filter(meeting =>
-          meeting.id !== action.id,
-        ),
-      };
+    case REMOVE_MEETING_BY_ID:
+      return state.filter(meeting => meeting.get('id') !== action.id);
 
-    case types.TOGGLE_MEETING:
-      return {
-        meetings: state.meetings.map(meeting =>
-          (meeting.id === action.id
-            ? { ...meeting, play: !meeting.play }
-            : meeting
-          ),
-        ),
-      };
+    case START_MEETING: {
+      const meetingIndex = state.findIndex((meeting => meeting.get('id') === action.id));
+      return state.setIn([meetingIndex, 'play'], true);
+    }
 
-    case types.RESET_MEETING:
-      return {
-        meetings: state.meetings.map(meeting =>
-          (meeting.id === action.id
-            ? {
-              clock: 0,
-              time: '00:00:00',
-              play: false,
-            }
-            : meeting
-          ),
-        ),
-      };
+    case STOP_MEETING:
+    case RESET_MEETING: {
+      const meetingIndex = state.findIndex((meeting => meeting.get('id') === action.id));
+      return state.setIn([meetingIndex, 'play'], false);
+    }
 
     default:
       return state;

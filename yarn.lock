@@ -2934,6 +2934,10 @@ ignore@^3.2.0:
   version "3.3.3"
   resolved "http://nzgotham:1337/ignore/-/ignore-3.3.3.tgz#432352e57accd87ab3110e82d3fea0e47812156d"
 
+immutable@^3.8.1:
+  version "3.8.1"
+  resolved "http://nzgotham:1337/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
+
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "http://nzgotham:1337/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -4149,6 +4153,10 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+normalizr@^3.2.3:
+  version "3.2.3"
+  resolved "http://nzgotham:1337/normalizr/-/normalizr-3.2.3.tgz#88755c64de418b040fa6ad1329b2de5c3250ac49"
+
 npmlog@^4.0.2:
   version "4.1.0"
   resolved "http://nzgotham:1337/npmlog/-/npmlog-4.1.0.tgz#dc59bee85f64f00ed424efb2af0783df25d1c0b5"
@@ -5151,6 +5159,10 @@ redux-logger@^3.0.6:
   dependencies:
     deep-diff "^0.3.5"
 
+redux-thunk@^2.2.0:
+  version "2.2.0"
+  resolved "http://nzgotham:1337/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
+
 redux@^3.7.0:
   version "3.7.0"
   resolved "http://nzgotham:1337/redux/-/redux-3.7.0.tgz#07a623cafd92eee8abe309d13d16538f6707926f"
@@ -6087,11 +6099,7 @@ uuid@^2.0.1, uuid@^2.0.2:
   version "2.0.3"
   resolved "http://nzgotham:1337/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
-uuid@^3.0.0:
-  version "3.0.1"
-  resolved "http://nzgotham:1337/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
-
-uuid@^3.1.0:
+uuid@^3.0.0, uuid@^3.1.0:
   version "3.1.0"
   resolved "http://nzgotham:1337/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 

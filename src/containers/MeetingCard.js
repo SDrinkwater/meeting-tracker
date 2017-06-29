@@ -8,7 +8,13 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
-import { removeMeetingById, startMeeting, stopMeeting, resetMeeting } from '../actions/meetings';
+import {
+  removeMeetingById,
+  startMeeting,
+  stopMeeting,
+  resetMeeting,
+  setMeetingTitle,
+} from '../actions/meetings';
 
 import Timer from '../components/Timer';
 import Title from '../components/Title';
@@ -35,14 +41,18 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    removeMeetingById, startMeeting, stopMeeting, resetMeeting,
+    removeMeetingById, startMeeting, stopMeeting, resetMeeting, setMeetingTitle,
   }, dispatch),
 });
 
 const MeetingCard = props => (
   <Paper style={styles.container}>
     <div style={styles.header}>
-      <Title />
+      <Title
+        id={props.id}
+        setTitle={props.actions.setMeetingTitle}
+        value={props.meeting.title}
+      />
       <IconButton
         style={styles.close}
         onClick={() => {
@@ -70,9 +80,10 @@ MeetingCard.propTypes = {
     startMeeting: PropTypes.func,
     stopMeeting: PropTypes.func,
     resetMeeting: PropTypes.func,
-
+    setMeetingTitle: PropTypes.func,
   }).isRequired,
   meeting: PropTypes.shape({
+    title: PropTypes.string,
     play: PropTypes.bool,
   }).isRequired,
   timer: PropTypes.shape({

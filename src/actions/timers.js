@@ -9,29 +9,35 @@ import {
 
 export const addTimer = id => ({
   type: ADD_TIMER,
-  id,
+  payload: id,
 });
 
 export const removeTimerById = id => ({
   type: REMOVE_TIMER_BY_ID,
-  id,
+  payload: id,
 });
 
 export const startTimer = (id, baseTime = 0) => ({
   type: START_TIMER,
-  id,
-  baseTime,
-  now: new Date().getTime(),
+  payload: {
+    id,
+    baseTime,
+    now: new Date().getTime(),
+  },
 });
 
 export const stopTimer = id => ({
   type: STOP_TIMER,
-  id,
-  now: new Date().getTime(),
+  payload: {
+    id,
+    now: new Date().getTime(),
+  },
 });
 
 export const resetTimer = id => ({
   type: RESET_TIMER,
-  id,
-  now: new Date().getTime(),
+  payload: {
+    id,
+    now: new Date().getTime(),
+  },
 });

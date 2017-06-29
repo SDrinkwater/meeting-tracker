@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 
@@ -29,19 +30,24 @@ class Title extends Component {
 
     this.state = {
       selected: false,
-      value: 'Meeting',
+      localValue: undefined,
     };
+  }
+
+  componentWillMount() {
+    this.setState({ localValue: this.props.value });
   }
 
   onBlur = () => {
     this.setState({ selected: false });
+    this.props.setTitle(this.props.id, this.state.localValue);
   }
 
   onChange = (event) => {
-    this.setState({ value: event.target.value });
+    this.setState({ localValue: event.target.value });
   }
 
-  onKeyPress = (e) => {
+  onKeyUp = (e) => {
     if (e.keyCode === 13 || e.keyCode === 27) {
       this.onBlur();
     }
@@ -59,16 +65,16 @@ class Title extends Component {
         <TextField
           hintText="Title"
           onChange={this.onChange}
-          onKeyUp={this.onKeyPress}
+          onKeyUp={this.onKeyUp}
           ref={(o) => { this.input = o; }}
           style={styles.textField}
-          value={this.state.value}
+          value={this.state.localValue}
         />
       );
     }
     return (
       <div style={styles.title}>
-        {this.state.value}
+        {this.props.value}
       </div>
     );
   }
@@ -87,5 +93,11 @@ class Title extends Component {
     );
   }
 }
+
+Title.propTypes = {
+  id: PropTypes.string.isRequired,
+  setTitle: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default Title;

@@ -3,6 +3,7 @@ import { Map, fromJS } from 'immutable';
 import {
   ADD_MEETING,
   REMOVE_MEETING_BY_ID,
+  SET_MEETING_TITLE,
 
   START_MEETING,
   STOP_MEETING,
@@ -10,28 +11,31 @@ import {
 } from '../constants/ActionTypes';
 
 const initialState = Map({});
+const defaultMeeting = fromJS({ title: 'Meeting', play: false });
 
 const meetings = (state = initialState, action) => {
   switch (action.type) {
     case ADD_MEETING:
       return state.set(
-        action.id,
-        fromJS({
-          title: 'Meeting',
-          play: false,
-        }),
+        action.payload,
+        defaultMeeting,
       );
 
     case REMOVE_MEETING_BY_ID:
-      return state.remove(action.id);
+      return state.remove(action.payload);
+
+    case SET_MEETING_TITLE: {
+      const { id, title } = action.payload;
+      return state.setIn([id, 'title'], title);
+    }
 
     case START_MEETING: {
-      return state.setIn([action.id, 'play'], true);
+      return state.setIn([action.payload, 'play'], true);
     }
 
     case STOP_MEETING:
     case RESET_MEETING: {
-      return state.setIn([action.id, 'play'], false);
+      return state.setIn([action.payload, 'play'], false);
     }
 
     default:

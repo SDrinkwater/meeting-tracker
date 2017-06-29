@@ -1,6 +1,7 @@
 import {
   ADD_MEETING,
   REMOVE_MEETING_BY_ID,
+  SET_MEETING_TITLE,
 
   START_MEETING,
   STOP_MEETING,
@@ -14,7 +15,7 @@ export const addMeeting = id => (
     dispatch(timerActions.addTimer(id));
     dispatch({
       type: ADD_MEETING,
-      id,
+      payload: id,
     });
   }
 );
@@ -24,17 +25,22 @@ export const removeMeetingById = id => (
     dispatch(timerActions.removeTimerById(id));
     dispatch({
       type: REMOVE_MEETING_BY_ID,
-      id,
+      payload: id,
     });
   }
 );
+
+export const setMeetingTitle = (id, title) => ({
+  type: SET_MEETING_TITLE,
+  payload: { id, title },
+});
 
 export const startMeeting = (id, baseTime) => (
   (dispatch) => {
     dispatch(timerActions.startTimer(id, baseTime));
     dispatch({
       type: START_MEETING,
-      id,
+      payload: id,
     });
   }
 );
@@ -44,7 +50,7 @@ export const stopMeeting = id => (
     dispatch(timerActions.stopTimer(id));
     dispatch({
       type: STOP_MEETING,
-      id,
+      payload: id,
     });
   }
 );
@@ -54,7 +60,7 @@ export const resetMeeting = id => (
     dispatch(timerActions.resetTimer(id));
     dispatch({
       type: RESET_MEETING,
-      id,
+      payload: id,
     });
   }
 );

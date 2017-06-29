@@ -15,7 +15,7 @@ const timers = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TIMER:
       return state.set(
-        action.id,
+        action.payload,
         fromJS({
           baseTime: 0,
           startedAt: undefined,
@@ -24,23 +24,26 @@ const timers = (state = initialState, action) => {
       );
 
     case REMOVE_TIMER_BY_ID:
-      return state.remove(action.id);
+      return state.remove(action.payload);
 
     case START_TIMER: {
-      return state.setIn([action.id, 'baseTime'], action.baseTime)
-        .setIn([action.id, 'startedAt'], action.now)
-        .setIn([action.id, 'stoppedAt'], undefined);
+      const { id, baseTime, now } = action.payload;
+      return state.setIn([id, 'baseTime'], baseTime)
+        .setIn([id, 'startedAt'], now)
+        .setIn([id, 'stoppedAt'], undefined);
     }
 
     case STOP_TIMER: {
-      return state.setIn([action.id, 'stoppedAt'], action.now);
+      const { id, now } = action.payload;
+      return state.setIn([id, 'stoppedAt'], now);
     }
 
     case RESET_TIMER: {
-      const timerToReset = state.get(action.id);
+      const { id, now } = action.payload;
+      const timerToReset = state.get(id);
       return state.setIn([action.id, 'baseTime'], 0)
-        .setIn([action.id, 'startedAt'], timerToReset.startedAt ? action.now : undefined)
-        .setIn([action.id, 'stoppedAt'], timerToReset.stoppedAt ? action.now : undefined);
+        .setIn([id, 'startedAt'], timerToReset.startedAt ? now : undefined)
+        .setIn([id, 'stoppedAt'], timerToReset.stoppedAt ? now : undefined);
     }
 
     default:

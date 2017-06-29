@@ -14,9 +14,19 @@ import registerServiceWorker from './registerServiceWorker';
 import './styles.css';
 import App from './App';
 
+let middleware;
+if (process.env.NODE_ENV === 'development') {
+  middleware = [
+    ReduxThunk,
+    createLogger(),
+  ];
+} else {
+  middleware = [ReduxThunk];
+}
+
 const store = createStore(
   reducers,
-  applyMiddleware(ReduxThunk, createLogger()),
+  applyMiddleware(...middleware),
 );
 
 const WrappedApp = () => (

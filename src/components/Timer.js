@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import numeral from 'numeral';
+
 import RaisedButton from 'material-ui/RaisedButton';
 
 import getElapsedTime from '../utils/getElapsedTime';
 import secondsTohhmmss from '../utils/secondsTohhmmss';
 
+numeral.defaultFormat('$0,0.00');
+
 const styles = {
-  time: {
+  value: {
     fontSize: '48px',
+    marginBottom: '4px',
+  },
+  time: {
+    fontSize: '18px',
+    color: '#b9b9b9',
+    marginBottom: '12px',
   },
   button: {
     margin: 12,
@@ -16,6 +26,12 @@ const styles = {
 };
 
 class Timer extends Component {
+  componentWillMount() {
+    if (this.props.play) {
+      this.interval = setInterval(this.forceUpdate.bind(this), 333);
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -33,10 +49,15 @@ class Timer extends Component {
   render() {
     const { baseTime, startedAt, stoppedAt } = this.props.timer;
     const elapsed = getElapsedTime(baseTime, startedAt, stoppedAt);
-    const hhmmss = secondsTohhmmss(elapsed > 1000 ? Math.floor(elapsed / 1000) : 0);
+    const seconds = elapsed > 1000 ? Math.floor(elapsed / 1000) : 0;
+    const value = numeral(seconds * 0.01053 * this.props.attendees).format();
+    const hhmmss = secondsTohhmmss(seconds);
 
     return (
       <div>
+        <div style={styles.value}>
+          {value}
+        </div>
         <div style={styles.time}>
           {hhmmss}
         </div>
@@ -68,6 +89,11 @@ Timer.propTypes = {
     startedAt: PropTypes.number,
     stoppedAt: PropTypes.number,
   }).isRequired,
+  attendees: PropTypes.number,
+};
+
+Timer.defaultProps = {
+  attendees: 1,
 };
 
 export default Timer;

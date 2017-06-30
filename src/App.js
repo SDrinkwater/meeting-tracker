@@ -12,7 +12,6 @@ import uuid from 'uuid/v1';
 import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui';
-import FlatButton from 'material-ui/FlatButton';
 
 import { addMeeting } from './actions/meetings';
 import MeetingCard from './containers/MeetingCard';
@@ -66,10 +65,7 @@ class App extends Component {
     return (
       <div>
         <div style={styles.header}>
-          <AppBar
-            title="Meeting tracker"
-            iconElementRight={<FlatButton label="Save" />}
-          />
+          <AppBar title="Meeting tracker" />
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild>
               <MenuItem primaryText="Add" onClick={this.addMeeting} />

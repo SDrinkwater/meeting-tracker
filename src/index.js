@@ -17,14 +17,9 @@ import registerServiceWorker from './registerServiceWorker';
 import './styles.css';
 import App from './App';
 
-let middleware;
+const middleware = [ReduxThunk];
 if (process.env.NODE_ENV === 'development') {
-  middleware = [
-    ReduxThunk,
-    createLogger(),
-  ];
-} else {
-  middleware = [ReduxThunk];
+  middleware.push(createLogger());
 }
 
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {};

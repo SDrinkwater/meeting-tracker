@@ -2,6 +2,7 @@ import {
   ADD_MEETING,
   REMOVE_MEETING_BY_ID,
   SET_MEETING_TITLE,
+  SET_MEETING_ATTENDEES,
 
   START_MEETING,
   STOP_MEETING,
@@ -33,6 +34,11 @@ export const removeMeetingById = id => (
 export const setMeetingTitle = (id, title) => ({
   type: SET_MEETING_TITLE,
   payload: { id, title },
+});
+
+export const setMeetingAttendees = (id, attendees) => ({
+  type: SET_MEETING_ATTENDEES,
+  payload: { id, attendees },
 });
 
 export const startMeeting = (id, baseTime) => (

@@ -1,4 +1,4 @@
-import { fromJS, Map } from 'immutable';
+import { Record, Map } from 'immutable';
 
 import {
   ADD_TIMER,
@@ -10,17 +10,14 @@ import {
 } from '../constants/ActionTypes';
 
 const initialState = Map({});
+const Timer = Record({ baseTime: 0, startedAt: undefined, stoppedAt: undefined });
 
 const timers = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TIMER:
       return state.set(
         action.payload,
-        fromJS({
-          baseTime: 0,
-          startedAt: undefined,
-          stoppedAt: undefined,
-        }),
+        new Timer(),
       );
 
     case REMOVE_TIMER_BY_ID:

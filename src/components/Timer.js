@@ -5,6 +5,7 @@ import numeral from 'numeral';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import NumberInput from './NumberInput';
 import getElapsedTime from '../utils/getElapsedTime';
 import secondsTohhmmss from '../utils/secondsTohhmmss';
 
@@ -36,6 +37,10 @@ class Timer extends Component {
     clearInterval(this.interval);
   }
 
+  onChange = (event) => {
+    this.props.setMeetingAttendees(this.props.id, event.target.value);
+  }
+
   toggle = (elapsed) => {
     if (this.props.play) {
       this.props.stop(this.props.id);
@@ -61,6 +66,12 @@ class Timer extends Component {
         <div style={styles.time}>
           {hhmmss}
         </div>
+        <NumberInput
+          label={'Attendees:'}
+          min={1}
+          onChange={this.onChange}
+          value={this.props.attendees}
+        />
         <RaisedButton
           label={this.props.play ? 'Stop' : 'Start'}
           primary={!this.props.play}
@@ -90,6 +101,7 @@ Timer.propTypes = {
     stoppedAt: PropTypes.number,
   }).isRequired,
   attendees: PropTypes.number,
+  setMeetingAttendees: PropTypes.func.isRequired,
 };
 
 Timer.defaultProps = {

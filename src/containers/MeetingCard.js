@@ -14,6 +14,7 @@ import {
   stopMeeting,
   resetMeeting,
   setMeetingTitle,
+  setMeetingAttendees,
 } from '../actions/meetings';
 
 import Timer from '../components/Timer';
@@ -21,6 +22,7 @@ import Title from '../components/Title';
 
 const styles = {
   container: {
+    position: 'relative',
     padding: '8px',
     margin: '24px',
     textAlign: 'center',
@@ -37,11 +39,20 @@ const styles = {
     width: '24px',
     height: '24px',
   },
+  attendees: {
+    position: 'absolute',
+    left: '0px',
+  },
 };
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    removeMeetingById, startMeeting, stopMeeting, resetMeeting, setMeetingTitle,
+    removeMeetingById,
+    startMeeting,
+    stopMeeting,
+    resetMeeting,
+    setMeetingTitle,
+    setMeetingAttendees,
   }, dispatch),
 });
 
@@ -69,6 +80,8 @@ const MeetingCard = props => (
       start={props.actions.startMeeting}
       stop={props.actions.stopMeeting}
       timer={props.timer}
+      attendees={props.meeting.attendees}
+      setMeetingAttendees={props.actions.setMeetingAttendees}
     />
   </Paper>
 );
@@ -81,10 +94,12 @@ MeetingCard.propTypes = {
     stopMeeting: PropTypes.func,
     resetMeeting: PropTypes.func,
     setMeetingTitle: PropTypes.func,
+    setMeetingAttendees: PropTypes.func,
   }).isRequired,
   meeting: PropTypes.shape({
     title: PropTypes.string,
     play: PropTypes.bool,
+    attendees: PropTypes.number,
   }).isRequired,
   timer: PropTypes.shape({
     baseTime: PropTypes.number,

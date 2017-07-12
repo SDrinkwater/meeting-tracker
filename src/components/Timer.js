@@ -33,6 +33,16 @@ class Timer extends Component {
     }
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.play !== this.props.play) {
+      if (nextProps.play) {
+        this.interval = setInterval(this.forceUpdate.bind(this), 333);
+      } else {
+        clearInterval(this.interval);
+      }
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -91,18 +101,18 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
+  attendees: PropTypes.number,
+  id: PropTypes.number.isRequired,
+  play: PropTypes.bool.isRequired,
+  reset: PropTypes.func.isRequired,
+  setMeetingAttendees: PropTypes.func.isRequired,
   start: PropTypes.func.isRequired,
   stop: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  play: PropTypes.bool.isRequired,
-  id: PropTypes.string.isRequired,
   timer: PropTypes.shape({
     baseTime: PropTypes.number,
     startedAt: PropTypes.number,
     stoppedAt: PropTypes.number,
   }).isRequired,
-  attendees: PropTypes.number,
-  setMeetingAttendees: PropTypes.func.isRequired,
 };
 
 Timer.defaultProps = {

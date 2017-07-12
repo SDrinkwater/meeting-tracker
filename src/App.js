@@ -39,7 +39,7 @@ const SortableItem = SortableElement(({ value }) => <div>{value}</div>);
 const SortableList = SortableContainer(({ items }) => (
   <div style={styles.content}>
     {items.map((value, index) =>
-      <SortableItem key={index} index={index} value={value} />,
+      <SortableItem key={value.key} index={index} value={value} />,
     )}
   </div>
 ));
@@ -59,14 +59,13 @@ class App extends Component {
     const id = uuid();
     this.props.actions.addMeeting(id);
   }
-
   render() {
-    const meetings = _.mapValues(this.props.meetings, (meeting, key) => {
-      const timer = this.props.timers[key];
+    const meetings = _.map(this.props.meetings, (meeting, index) => {
+      const timer = this.props.timers[index];
       return (
         <MeetingCard
-          key={key}
-          id={key}
+          key={index}
+          id={index}
           meeting={meeting}
           timer={timer}
         />
@@ -79,7 +78,7 @@ class App extends Component {
           <AppBar title="Meeting tracker" />
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild>
-              <MenuItem primaryText="Add" onClick={this.addMeeting} />
+              <MenuItem primaryText="Add" onClick={this.props.actions.addMeeting} />
             </ToolbarGroup>
           </Toolbar>
         </div>
@@ -87,6 +86,7 @@ class App extends Component {
           axis="xy"
           items={Object.values(meetings)}
           onSortEnd={({ oldIndex, newIndex }) => this.props.actions.moveMeeting(oldIndex, newIndex)}
+          distance={25}
         />
       </div>
     );
@@ -98,8 +98,8 @@ App.propTypes = {
     addMeeting: PropTypes.func,
     moveMeeting: PropTypes.func,
   }).isRequired,
-  meetings: PropTypes.shape({}).isRequired,
-  timers: PropTypes.shape({}).isRequired,
+  meetings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  timers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 // Needed for onTouchTap

@@ -88,19 +88,19 @@ const MeetingCard = props => (
 );
 
 MeetingCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   actions: PropTypes.shape({
     removeMeetingById: PropTypes.func,
+    resetMeeting: PropTypes.func,
+    setMeetingAttendees: PropTypes.func,
+    setMeetingTitle: PropTypes.func,
     startMeeting: PropTypes.func,
     stopMeeting: PropTypes.func,
-    resetMeeting: PropTypes.func,
-    setMeetingTitle: PropTypes.func,
-    setMeetingAttendees: PropTypes.func,
   }).isRequired,
   meeting: PropTypes.shape({
-    title: PropTypes.string,
-    play: PropTypes.bool,
     attendees: PropTypes.number,
+    play: PropTypes.bool,
+    title: PropTypes.string,
   }).isRequired,
   timer: PropTypes.shape({
     baseTime: PropTypes.number,

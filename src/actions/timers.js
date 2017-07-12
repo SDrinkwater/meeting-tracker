@@ -1,6 +1,7 @@
 import {
   ADD_TIMER,
   REMOVE_TIMER_BY_ID,
+  MOVE_TIMER,
 
   START_TIMER,
   STOP_TIMER,
@@ -15,6 +16,11 @@ export const addTimer = id => ({
 export const removeTimerById = id => ({
   type: REMOVE_TIMER_BY_ID,
   payload: id,
+});
+
+export const moveTimer = (oldIndex, newIndex) => ({
+  type: MOVE_TIMER,
+  payload: { oldIndex, newIndex },
 });
 
 export const startTimer = (id, baseTime = 0) => ({

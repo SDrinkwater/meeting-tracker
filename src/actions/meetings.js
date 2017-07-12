@@ -12,12 +12,11 @@ import {
 
 import * as timerActions from './timers';
 
-export const addMeeting = id => (
+export const addMeeting = () => (
   (dispatch) => {
-    dispatch(timerActions.addTimer(id));
+    dispatch(timerActions.addTimer());
     dispatch({
       type: ADD_MEETING,
-      payload: id,
     });
   }
 );
@@ -42,10 +41,15 @@ export const setMeetingAttendees = (id, attendees) => ({
   payload: { id, attendees: parseInt(attendees, 10) },
 });
 
-export const moveMeeting = (oldIndex, newIndex) => ({
-  type: MOVE_MEETING,
-  payload: { oldIndex, newIndex },
-});
+export const moveMeeting = (oldIndex, newIndex) => (
+  (dispatch) => {
+    dispatch(timerActions.moveTimer(oldIndex, newIndex));
+    dispatch({
+      type: MOVE_MEETING,
+      payload: { oldIndex, newIndex },
+    });
+  }
+);
 
 export const startMeeting = (id, baseTime) => (
   (dispatch) => {

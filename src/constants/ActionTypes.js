@@ -7,6 +7,7 @@ export const MOVE_MEETING = 'MOVE_MEETING';
 
 export const ADD_TIMER = 'ADD_TIMER';
 export const REMOVE_TIMER_BY_ID = 'REMOVE_TIMER_BY_ID';
+export const MOVE_TIMER = 'MOVE_TIMER';
 
 export const START_TIMER = 'START_TIMER';
 export const STOP_TIMER = 'STOP_TIMER';

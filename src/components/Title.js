@@ -38,6 +38,12 @@ class Title extends Component {
     this.setState({ localValue: this.props.value });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.state.localValue) {
+      this.setState({ localValue: nextProps.value });
+    }
+  }
+
   onBlur = () => {
     this.setState({ selected: false });
     this.props.setTitle(this.props.id, this.state.localValue);
@@ -88,10 +94,11 @@ class Title extends Component {
     const title = this.getTitle();
     return (
       <div
-        style={styles.container}
-        ref={(o) => { this.title = o; }}
-        onClick={this.getTitleFocus}
+        id={this.props.id}
         onBlur={this.onBlur}
+        onClick={this.getTitleFocus}
+        ref={(o) => { this.title = o; }}
+        style={styles.container}
       >
         { title }
       </div>

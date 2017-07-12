@@ -48,8 +48,13 @@ class Title extends Component {
   }
 
   onKeyUp = (e) => {
-    if (e.keyCode === 13 || e.keyCode === 27) {
+    // Enter key
+    if (e.keyCode === 13) {
       this.onBlur();
+    }
+    // Esc key
+    if (e.keyCode === 27) {
+      this.setState({ selected: false, localValue: this.props.value });
     }
   };
 
@@ -95,7 +100,7 @@ class Title extends Component {
 }
 
 Title.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   setTitle: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
 };

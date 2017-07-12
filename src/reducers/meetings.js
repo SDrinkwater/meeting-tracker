@@ -44,8 +44,11 @@ const meetings = (state = initialState, action) => {
     }
 
     case STOP_MEETING:
-    case RESET_MEETING: {
       return state.setIn([action.payload, 'play'], false);
+
+    case RESET_MEETING: {
+      return state.setIn([action.payload, 'play'], false)
+        .setIn([action.payload, 'attendees'], 1);
     }
 
     default:

@@ -3,6 +3,7 @@ import {
   REMOVE_MEETING_BY_ID,
   SET_MEETING_TITLE,
   SET_MEETING_ATTENDEES,
+  MOVE_MEETING,
 
   START_MEETING,
   STOP_MEETING,
@@ -38,7 +39,12 @@ export const setMeetingTitle = (id, title) => ({
 
 export const setMeetingAttendees = (id, attendees) => ({
   type: SET_MEETING_ATTENDEES,
-  payload: { id, attendees },
+  payload: { id, attendees: parseInt(attendees, 10) },
+});
+
+export const moveMeeting = (oldIndex, newIndex) => ({
+  type: MOVE_MEETING,
+  payload: { oldIndex, newIndex },
 });
 
 export const startMeeting = (id, baseTime) => (
@@ -70,4 +76,3 @@ export const resetMeeting = id => (
     });
   }
 );
-

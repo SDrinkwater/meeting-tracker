@@ -55,7 +55,8 @@ class Timer extends Component {
     const { baseTime, startedAt, stoppedAt } = this.props.timer;
     const elapsed = getElapsedTime(baseTime, startedAt, stoppedAt);
     const seconds = elapsed > 1000 ? Math.floor(elapsed / 1000) : 0;
-    const value = numeral(seconds * 0.01053 * this.props.attendees).format();
+    // This is based on an average salary of $90k
+    const value = numeral(seconds * 0.01255 * this.props.attendees).format();
     const hhmmss = secondsTohhmmss(seconds);
 
     return (

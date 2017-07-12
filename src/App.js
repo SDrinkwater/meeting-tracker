@@ -8,12 +8,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import uuid from 'uuid/v1';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui';
 
-import { addMeeting } from './actions/meetings';
+import { addMeeting, moveMeeting } from './actions/meetings';
 import MeetingCard from './containers/MeetingCard';
 
 const styles = {
@@ -34,13 +35,23 @@ const styles = {
   },
 };
 
+const SortableItem = SortableElement(({ value }) => <div>{value}</div>);
+const SortableList = SortableContainer(({ items }) => (
+  <div style={styles.content}>
+    {items.map((value, index) =>
+      <SortableItem key={index} index={index} value={value} />,
+    )}
+  </div>
+));
+
+// Remove toJS from mapStateToProps
 const maptStateToProps = state => ({
   meetings: state.meetings.toJS(),
   timers: state.timers.toJS(),
 });
 
 const maptDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ addMeeting }, dispatch),
+  actions: bindActionCreators({ addMeeting, moveMeeting }, dispatch),
 });
 
 class App extends Component {
@@ -72,9 +83,11 @@ class App extends Component {
             </ToolbarGroup>
           </Toolbar>
         </div>
-        <div style={styles.content}>
-          {Object.values(meetings)}
-        </div>
+        <SortableList
+          axis="xy"
+          items={Object.values(meetings)}
+          onSortEnd={({ oldIndex, newIndex }) => this.props.actions.moveMeeting(oldIndex, newIndex)}
+        />
       </div>
     );
   }
@@ -83,6 +96,7 @@ class App extends Component {
 App.propTypes = {
   actions: PropTypes.shape({
     addMeeting: PropTypes.func,
+    moveMeeting: PropTypes.func,
   }).isRequired,
   meetings: PropTypes.shape({}).isRequired,
   timers: PropTypes.shape({}).isRequired,

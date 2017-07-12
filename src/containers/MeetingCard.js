@@ -27,6 +27,7 @@ const styles = {
     margin: '24px',
     textAlign: 'center',
     width: '272px',
+    userSelect: 'none',
   },
   header: {
     position: 'relative',
